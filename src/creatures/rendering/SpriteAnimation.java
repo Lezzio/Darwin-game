@@ -36,13 +36,9 @@ public class SpriteAnimation extends Transition {
     }
 
     protected void interpolate(double k) {
-        final int index = Math.min((int) Math.floor(k * count), count - 1);
-        if (index != lastIndex) {
-            final int x = (index % columns) * width  + offsetX;
-            final int y = offsetY;
-            System.out.println("For " + index + ": " + x + " and " + y);
-            imageView.setViewport(new Rectangle2D(x, y, width, height));
-            lastIndex = index;
-        }
+        final int index = (int) Math.floor(k * count);
+        final int x = (index % columns) * width  + offsetX;
+        final int y = offsetY;
+        imageView.setViewport(new Rectangle2D(x, y, width, height));
     }
 }

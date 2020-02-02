@@ -8,13 +8,12 @@ import javafx.scene.layout.TilePane;
 
 import java.util.ArrayList;
 
-public class Map extends Scene {
+public class Map extends TilePane {
 
-    private TilePane pane;
     private ArrayList<Creature> creatures = new ArrayList<Creature>();
     private Tile[][] tiles;
 
-    public Map(Parent root) {
-        super(root);
+    public Map(int col, int row) {
+        super(col, row);
     }
 }

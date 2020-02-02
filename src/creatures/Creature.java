@@ -2,6 +2,7 @@ package creatures;
 
 public abstract class Creature implements Livable, Mutable {
 
+    private int id;
     private DNA dna;
     private double health;
 
@@ -12,7 +13,7 @@ public abstract class Creature implements Livable, Mutable {
     /**
      * Called by the game system to perform a behaviour
      */
-    public void play() {
+    public void update() {
 
     }
     @Override
