@@ -13,9 +13,10 @@ import rendering.DrawingHandler;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-public class GameManager {
+public class GameManager extends Thread {
 
     private Map map;
+    ExecutorService service = Executors.newCachedThreadPool();
 
     public GameManager(Map map) {
         this.map = map;
@@ -25,34 +26,58 @@ public class GameManager {
         //Initialize update animals task
         Rabbit rabbit = new Rabbit(DrawingHandler.NONE);
         Wolf wolf = new Wolf(DrawingHandler.NONE);
-        map.addCreature(rabbit, new Location(2, 2));
-        map.addCreature(wolf, new Location(2,4));
-        updateAnimals();
+        map.addCreature(rabbit, new Location(0, 0));
+        map.addCreature(wolf, new Location(0, 1));
+        for(int k = 0; k < 12; k++) {
+            for(int l = 0; l < 8; l++) {
+                Wolf wolf4 = new Wolf(DrawingHandler.NONE);
+                map.addCreature(wolf4, new Location(k, l));
+            }
+        }
+        service.submit(new Runnable() {
+            @Override
+            public void run() {
+                while(true) {
+                    try {
+                        Thread.sleep(10);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                    updateAnimals();
+                }
+            }
+        });
     }
 
     //Execute action in parallel
     //Block if already running action on the same creature
-
     public void updateAnimals() {
-        ExecutorService service = Executors.newCachedThreadPool();
         for(Creature creature : map.getCreatures()) {
-            System.out.println("Calling once for " + creature);
-            Action action = ActionManager.getAction(creature);
-            service.execute(new Runnable() {
-                @Override
-                public void run() {
-                    try {
-                            action.perform(creature, map);
-                            System.out.println("Sent action performance");
-                        synchronized (creature) {
-                            creature.wait();
-                            System.out.println("Passed the wait");
+            if (!creature.isRunning()) {
+                System.out.println("Calling once for " + creature + " DATA : " +  map.getTile(creature).getLocation() + " |" + map.getTile(creature).getCreature());
+                creature.setRunning(true);
+                service.execute(new Runnable() {
+                    @Override
+                    public void run() {
+                        try {
+                            Action action = ActionManager.getAction(creature);
+                            int duration = action.perform(creature, map);
+                            Thread.sleep(duration + 200);
+                            creature.setRunning(false);
+                            /*
+                            synchronized (creature) {
+                                System.out.println("Starting the wait");
+                                creature.wait();
+                                creature.setRunning(false);
+                                System.out.println("Passed the wait");
+                            }
+                             */
+                        } catch (InterruptedException e) {
+                            e.printStackTrace();
                         }
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
                     }
-                }
-            });
+                });
+            }
         }
     }
 

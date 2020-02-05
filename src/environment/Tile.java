@@ -44,6 +44,7 @@ public class Tile {
         return creature == null && holdables.isEmpty();
     }
     public Location getLocation() {
+        if(location == null) System.out.println("HERE IT IS BOYYY NULLLLL ZEOPGJZPOEGJZOEGJZOPGJZPOEGJ86846b88r46re8b4e6b4re");
         return location;
     }
 }

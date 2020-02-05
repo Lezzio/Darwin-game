@@ -5,8 +5,8 @@ import environment.Map;
 
 public class FeedCarnivore implements Action {
     @Override
-    public void perform(Creature source, Map map) {
-
+    public int perform(Creature source, Map map) {
+        return 0;
     }
 
     @Override

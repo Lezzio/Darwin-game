@@ -29,8 +29,8 @@ public class Map extends Pane {
     public Map(double maxWidth, double maxHeight) {
         col = (int) (maxWidth / tileSize);
         row = (int) ((maxHeight - 40) / tileSize); //-40 because we're not full screen
-        tiles = new Tile[col][row];
-        System.out.println(col + " and " + row);
+        tiles = new Tile[row][col];
+        System.out.println(tiles.length + " and " + tiles[0].length);
         generateGround();
         ground.setPrefRows((int) row);
         ground.setPrefColumns((int) col);
@@ -45,8 +45,8 @@ public class Map extends Pane {
             final ImageView tileView = new ImageView(texture);
             tileView.setViewport(new Rectangle2D(0, 0, 48, 48)); //Temporary ugly one
             ground.getChildren().add(tileView);
-            tiles[i % col][j] = new Tile(new Location(i % col, j));
-            if(i % col == 0) {
+            tiles[i % row][j] = new Tile(new Location(i % row, j));
+            if(i % row == 0) {
                 j++;
             }
         }
@@ -60,11 +60,11 @@ public class Map extends Pane {
     /**
      * Returns true if the Tile was available, false if not
      */
-    public boolean addCreature(Creature creature, Location location) {
-        creatures.add(creature);
+    public synchronized boolean addCreature(Creature creature, Location location) {
         Tile tile = getTile(location);
         boolean available = tile.isAvailable();
         if(available) {
+            creatures.add(creature);
             tile.add(creature);
             //Add graphics
             Node drawing = creature.getDrawing();
@@ -73,7 +73,7 @@ public class Map extends Pane {
         }
         return available;
     }
-    public void removeCreature(Creature creature) {
+    public synchronized void removeCreature(Creature creature) {
         //TODO remove creature from Tile
         getTile(creature).removeCreature();
         creatures.remove(creature);
@@ -199,5 +199,16 @@ public class Map extends Pane {
 
     public int getTileSize() {
         return tileSize;
+    }
+
+    public boolean isInside(Location loc) {
+        return loc.isInside(tiles);
+    }
+    public synchronized void move(Creature target, Tile from, Tile to) {
+        from.removeCreature();
+        to.add(target);
+    }
+    public synchronized void move(Creature target, Location from, Location to) {
+        move(target, getTile(from), getTile(to));
     }
 }

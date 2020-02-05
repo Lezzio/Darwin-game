@@ -46,4 +46,7 @@ public class Location {
     public boolean isInside(Object[][] array) {
         return row >= 0 && col >= 0 && row < array.length && col < array[0].length;
     }
+    public String toString() {
+        return "(Col " + col + ":" + "Row " + row + ")";
+    }
 }

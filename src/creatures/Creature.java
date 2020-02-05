@@ -11,6 +11,8 @@ public abstract class Creature implements Livable, Mutable, Drawable {
     private DNA dna;
     private double health;
 
+    private boolean running;
+
     public Creature(int params) {
         draw(params);
     }
@@ -20,6 +22,12 @@ public abstract class Creature implements Livable, Mutable, Drawable {
      */
     public void update() {
 
+    }
+    public boolean isRunning() {
+        return running;
+    }
+    public void setRunning(boolean running) {
+        this.running = running;
     }
     public int getId() {
         return id;
