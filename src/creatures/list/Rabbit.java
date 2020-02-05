@@ -4,7 +4,13 @@ import creatures.Creature;
 
 public class Rabbit extends Creature {
 
-    //Add the image address
     //Construct with the appropriate behaviours
+    public Rabbit(int params) {
+        super(params);
+    }
+
+    public String getAddress() {
+        return "rabbit_sprite.png";
+    }
 
 }

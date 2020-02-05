@@ -1,13 +1,18 @@
 package creatures;
 
-public abstract class Creature implements Livable, Mutable {
+import javafx.scene.Node;
+import rendering.Drawable;
+import rendering.DrawingHandler;
+
+public abstract class Creature implements Livable, Mutable, Drawable {
 
     private int id;
+    private Node drawing;
     private DNA dna;
     private double health;
 
-    public Creature() {
-
+    public Creature(int params) {
+        draw(params);
     }
 
     /**
@@ -15,6 +20,15 @@ public abstract class Creature implements Livable, Mutable {
      */
     public void update() {
 
+    }
+    public int getId() {
+        return id;
+    }
+    public void draw(int param) {
+        drawing = DrawingHandler.draw(this, param);
+    }
+    public Node getDrawing() {
+        return drawing;
     }
     @Override
     public void reproduce() {
