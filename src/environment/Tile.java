@@ -17,11 +17,13 @@ public class Tile {
 
     public void add(Creature creature) {
         this.creature = creature;
+        holdables.add(creature);
     }
     public void add(TileHoldable holdable) {
         holdables.add(holdable);
     }
     public void removeCreature() {
+        holdables.remove(creature);
         creature = null;
     }
     public void remove(TileHoldable holdable) {
@@ -44,7 +46,10 @@ public class Tile {
         return creature == null && holdables.isEmpty();
     }
     public Location getLocation() {
-        if(location == null) System.out.println("HERE IT IS BOYYY NULLLLL ZEOPGJZPOEGJZOEGJZOPGJZPOEGJ86846b88r46re8b4e6b4re");
         return location;
+    }
+
+    public ArrayList<TileHoldable> getHoldables() {
+        return holdables;
     }
 }

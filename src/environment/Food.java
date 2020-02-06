@@ -5,4 +5,14 @@ public class Food implements TileHoldable {
     public boolean isObstacle() {
         return false;
     }
+
+    @Override
+    public Tile getTile() {
+        return null;
+    }
+
+    @Override
+    public void setTile(Tile tile) {
+
+    }
 }

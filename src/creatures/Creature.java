@@ -1,36 +1,39 @@
 package creatures;
 
+import environment.Location;
+import environment.Tile;
+import environment.TileHoldable;
 import javafx.scene.Node;
 import rendering.Drawable;
 import rendering.DrawingHandler;
 
-public abstract class Creature implements Livable, Mutable, Drawable {
+public abstract class Creature implements Livable, Mutable, TileHoldable, Drawable {
 
-    private int id;
-    private Node drawing;
-    private DNA dna;
+    //Attributs
+    protected DNA dna;
     private double health;
 
+    //Environment
+    private Node drawing;
+    private Tile tile;
     private boolean running;
 
     public Creature(int params) {
         draw(params);
+        dna = new DNA();
     }
 
-    /**
-     * Called by the game system to perform a behaviour
-     */
-    public void update() {
-
+    public Tile getTile() {
+        return tile;
+    }
+    public void setTile(Tile tile) {
+        this.tile = tile;
     }
     public boolean isRunning() {
         return running;
     }
     public void setRunning(boolean running) {
         this.running = running;
-    }
-    public int getId() {
-        return id;
     }
     public void draw(int param) {
         drawing = DrawingHandler.draw(this, param);
@@ -70,12 +73,12 @@ public abstract class Creature implements Livable, Mutable, Drawable {
 
     @Override
     public DNA getDNA() {
-        return null;
+        return dna;
     }
 
     @Override
-    public DNA setDNA() {
-        return null;
+    public void setDNA() {
+        this.dna = dna;
     }
 
     @Override

@@ -49,4 +49,7 @@ public class Location {
     public String toString() {
         return "(Col " + col + ":" + "Row " + row + ")";
     }
+    public int distance(Location to) {
+        return Math.abs(col - to.getCol()) + Math.abs(row - to.getRow());
+    }
 }

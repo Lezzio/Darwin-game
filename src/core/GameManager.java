@@ -25,14 +25,16 @@ public class GameManager {
         //Initialize update animals task
         Rabbit rabbit = new Rabbit(DrawingHandler.NONE);
         Wolf wolf = new Wolf(DrawingHandler.NONE);
-        map.addCreature(rabbit, new Location(0, 0));
-        map.addCreature(wolf, new Location(0, 1));
+        map.addCreature(rabbit, new Location(8, 8));
+        map.addCreature(wolf, new Location(0, 0));
+        /*
         for(int k = 0; k < 12; k++) {
             for(int l = 0; l < 8; l++) {
                 Wolf wolf4 = new Wolf(DrawingHandler.NONE);
                 map.addCreature(wolf4, new Location(k+6, l+6));
             }
         }
+         */
         Thread thread = new Thread(() -> {
             while(true) {
                 try {

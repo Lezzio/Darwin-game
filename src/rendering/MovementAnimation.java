@@ -46,9 +46,6 @@ public class MovementAnimation {
         int tileSize = DarwinGame.map.getTileSize();
         int col = to.getCol() - from.getCol();
         int row = to.getRow() - from.getRow();
-        if(col != 0 && row != 0) {
-            System.out.println("ERROR 890");
-        }
         translate.setDuration(Duration.millis(duration));
         translate.setByX(col * tileSize);
         translate.setByY(row * tileSize);

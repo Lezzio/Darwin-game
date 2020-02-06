@@ -1,6 +1,7 @@
 package creatures.actions;
 
 import creatures.Creature;
+import creatures.DNA;
 
 public class ActionManager {
 
@@ -10,10 +11,8 @@ public class ActionManager {
      * @return The action to be performed
      */
     public static Action getAction(Creature creature) {
-        if(Math.random() > 0.5) {
-            return new RandomMove();
-        } else {
-            return new Idle(500);
-        }
+        DNA dna = creature.getDNA();
+        RandomList<Action> actions = RandomList.from(dna.tendencies);
+        return actions.getRandomElement();
     }
 }

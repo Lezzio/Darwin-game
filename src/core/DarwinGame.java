@@ -21,7 +21,6 @@ public class DarwinGame extends Application {
 
         System.out.println(screenWidth + " " + screenHeight);
         map = new Map(screenWidth, screenHeight);
-        map.test();
         map.setStyle("-fx-background-color:gray;"); //Temporary
         Scene scene = new Scene(map);
         primaryStage.setScene(scene);
