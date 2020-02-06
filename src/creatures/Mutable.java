@@ -2,6 +2,6 @@ package creatures;
 
 public interface Mutable {
     public DNA getDNA();
-    public DNA setDNA();
+    public void setDNA();
     public DNA mutate();
 }
