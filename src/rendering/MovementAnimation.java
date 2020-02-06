@@ -36,12 +36,12 @@ public class MovementAnimation {
      * IMPORTANT check with isPossible before performing this method!
      * @return
      */
-    public int perform() {
+    public void perform() {
         //Move creature on the map
         DarwinGame.map.move(target, from, to);
 
         //Step 1 - Translation
-        int duration = 50; //Add speed equation;
+        int duration = 600; //Add speed equation;
         translate = new TranslateTransition();
         int tileSize = DarwinGame.map.getTileSize();
         int col = to.getCol() - from.getCol();
@@ -53,7 +53,6 @@ public class MovementAnimation {
         translate.setByX(col * tileSize);
         translate.setByY(row * tileSize);
         translate.setNode(target.getDrawing());
-        //translate.play();
         //Step 2 - Animation
 
         //Orientation
@@ -68,7 +67,6 @@ public class MovementAnimation {
                 48*orientation, 48,48
         );
         animation.setCycleCount(duration / cycleDuration);
-        //animation.play();
 
         translate.setOnFinished(event -> {
             target.setRunning(false);
@@ -76,21 +74,6 @@ public class MovementAnimation {
         //Add to the queue on the JavaFX Thread
         Platform.runLater(translate::play);
         Platform.runLater(animation::play);
-        /*
-        translate.setOnFinished(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent event) {
-                System.out.println("Calling EVENTHANDLER");
-                synchronized (target) {
-                    target.notifyAll();
-                }
-                System.out.println("Notify passed");
-            }
-        });
-         */
-        /*
-         */
-        return duration;
     }
     public boolean isDone() {
         return translate.getStatus().equals(Animation.Status.STOPPED);

@@ -30,33 +30,32 @@ public class GameManager {
         for(int k = 0; k < 12; k++) {
             for(int l = 0; l < 8; l++) {
                 Wolf wolf4 = new Wolf(DrawingHandler.NONE);
-                map.addCreature(wolf4, new Location(k, l));
+                map.addCreature(wolf4, new Location(k+6, l+6));
             }
         }
-        service.submit(new Runnable() {
-            @Override
-            public void run() {
-                while(true) {
-                    try {
-                        Thread.sleep(25);
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
-                    }
+        Thread thread = new Thread(() -> {
+            while(true) {
+                try {
+                    Thread.sleep(25);
                     updateAnimals();
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
                 }
             }
         });
+        thread.start();
     }
 
-    //Execute actions concurrently
-    //Block if already running action on the same creature
+    /**
+     * Execute actions asynchronously
+     * Doesn't pass if already running action on the same creature
+     */
     public void updateAnimals() {
         for(Creature creature : map.getCreatures()) {
             if (!creature.isRunning()) {
-                System.out.println("Calling once for " + creature + " DATA : " +  map.getTile(creature).getLocation() + " |" + map.getTile(creature).getCreature());
                 creature.setRunning(true);
                 Action action = ActionManager.getAction(creature);
-                int duration = action.perform(creature, map);
+                action.perform(creature, map);
             }
         }
     }

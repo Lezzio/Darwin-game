@@ -3,12 +3,17 @@ package creatures.actions;
 import creatures.Creature;
 
 public class ActionManager {
+
     /**
-     * Always creature.setRunning(false) when action is done
+     * Always set the running state of the creature to false when action is done
      * @param creature
-     * @return
+     * @return The action to be performed
      */
     public static Action getAction(Creature creature) {
-        return new RandomMove();
+        if(Math.random() > 0.5) {
+            return new RandomMove();
+        } else {
+            return new Idle(500);
+        }
     }
 }
