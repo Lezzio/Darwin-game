@@ -41,7 +41,7 @@ public class MovementAnimation {
         DarwinGame.map.move(target, from, to);
 
         //Step 1 - Translation
-        int duration = 300; //Add speed equation;
+        int duration = 50; //Add speed equation;
         translate = new TranslateTransition();
         int tileSize = DarwinGame.map.getTileSize();
         int col = to.getCol() - from.getCol();
@@ -60,7 +60,7 @@ public class MovementAnimation {
         int orientation = DrawingHandler.getOrientation(col, row);
         int dnaOffset = DrawingHandler.getDnaOffset(target);
         //TODO Not forget to add DNA here too on the offsets
-        int cycleDuration = 300; //Add speed equation
+        int cycleDuration = 500; //Add speed equation
         final Animation animation = new SpriteAnimation(
                 (ImageView) target.getDrawing(),
                 Duration.millis(cycleDuration),
@@ -69,6 +69,13 @@ public class MovementAnimation {
         );
         animation.setCycleCount(duration / cycleDuration);
         //animation.play();
+
+        translate.setOnFinished(event -> {
+            target.setRunning(false);
+        });
+        //Add to the queue on the JavaFX Thread
+        Platform.runLater(translate::play);
+        Platform.runLater(animation::play);
         /*
         translate.setOnFinished(new EventHandler<ActionEvent>() {
             @Override
@@ -81,8 +88,8 @@ public class MovementAnimation {
             }
         });
          */
-        Platform.runLater(() -> translate.play());
-        Platform.runLater(() -> animation.play());
+        /*
+         */
         return duration;
     }
     public boolean isDone() {

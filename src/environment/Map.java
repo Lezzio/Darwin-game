@@ -60,7 +60,7 @@ public class Map extends Pane {
     /**
      * Returns true if the Tile was available, false if not
      */
-    public synchronized boolean addCreature(Creature creature, Location location) {
+    public boolean addCreature(Creature creature, Location location) {
         Tile tile = getTile(location);
         boolean available = tile.isAvailable();
         if(available) {
@@ -73,7 +73,7 @@ public class Map extends Pane {
         }
         return available;
     }
-    public synchronized void removeCreature(Creature creature) {
+    public void removeCreature(Creature creature) {
         //TODO remove creature from Tile
         getTile(creature).removeCreature();
         creatures.remove(creature);
@@ -208,7 +208,7 @@ public class Map extends Pane {
         from.removeCreature();
         to.add(target);
     }
-    public synchronized void move(Creature target, Location from, Location to) {
+    public void move(Creature target, Location from, Location to) {
         move(target, getTile(from), getTile(to));
     }
 }

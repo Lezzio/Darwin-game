@@ -7,13 +7,12 @@ import creatures.list.Rabbit;
 import creatures.list.Wolf;
 import environment.Location;
 import environment.Map;
-import javafx.concurrent.Task;
 import rendering.DrawingHandler;
 
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-public class GameManager extends Thread {
+public class GameManager {
 
     private Map map;
     ExecutorService service = Executors.newCachedThreadPool();
@@ -39,7 +38,7 @@ public class GameManager extends Thread {
             public void run() {
                 while(true) {
                     try {
-                        Thread.sleep(10);
+                        Thread.sleep(25);
                     } catch (InterruptedException e) {
                         e.printStackTrace();
                     }
@@ -49,34 +48,15 @@ public class GameManager extends Thread {
         });
     }
 
-    //Execute action in parallel
+    //Execute actions concurrently
     //Block if already running action on the same creature
     public void updateAnimals() {
         for(Creature creature : map.getCreatures()) {
             if (!creature.isRunning()) {
                 System.out.println("Calling once for " + creature + " DATA : " +  map.getTile(creature).getLocation() + " |" + map.getTile(creature).getCreature());
                 creature.setRunning(true);
-                service.execute(new Runnable() {
-                    @Override
-                    public void run() {
-                        try {
-                            Action action = ActionManager.getAction(creature);
-                            int duration = action.perform(creature, map);
-                            Thread.sleep(duration + 200);
-                            creature.setRunning(false);
-                            /*
-                            synchronized (creature) {
-                                System.out.println("Starting the wait");
-                                creature.wait();
-                                creature.setRunning(false);
-                                System.out.println("Passed the wait");
-                            }
-                             */
-                        } catch (InterruptedException e) {
-                            e.printStackTrace();
-                        }
-                    }
-                });
+                Action action = ActionManager.getAction(creature);
+                int duration = action.perform(creature, map);
             }
         }
     }
