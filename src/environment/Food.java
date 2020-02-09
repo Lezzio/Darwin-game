@@ -1,6 +1,8 @@
 package environment;
 
 public class Food implements TileHoldable {
+    private Tile tile;
+
     @Override
     public boolean isObstacle() {
         return false;
@@ -8,11 +10,11 @@ public class Food implements TileHoldable {
 
     @Override
     public Tile getTile() {
-        return null;
+        return tile;
     }
 
     @Override
     public void setTile(Tile tile) {
-
+        this.tile = tile;
     }
 }

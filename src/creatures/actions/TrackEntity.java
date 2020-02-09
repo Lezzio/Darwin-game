@@ -24,13 +24,14 @@ public class TrackEntity implements  Action {
         Class<? extends TileHoldable> tileHoldableType = entities.getRandomElement();
         Location from = source.getTile().getLocation();
         TileHoldable tileHoldable = MovementHandler.closestTypeFrom(map, from, tileHoldableType);
+        //Check if a trackable entity exists
+        if(tileHoldable != null) {
         Location to = tileHoldable.getTile().getLocation();
         Location locationTowards = MovementHandler.getLocationTowards(from, to);
-        System.out.println("Towards" + locationTowards);
         //TODO Implement at so it gets the faster way even if the first one wasn't possible
-        MovementAnimation movementAnimation = new MovementAnimation(source, from, locationTowards);
-        if(movementAnimation.isPossible()) movementAnimation.perform();
-        else source.setRunning(false);
+        if(MovementHandler.move(source, from, locationTowards)) return 0;
+        }
+        source.setRunning(false);
         return 0;
     }
 

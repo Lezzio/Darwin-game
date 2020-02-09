@@ -2,26 +2,29 @@ package creatures.actions;
 
 import core.DarwinGame;
 import creatures.Creature;
+import creatures.MovementHandler;
 import environment.Location;
 import environment.Map;
+import environment.Tile;
 import rendering.MovementAnimation;
 
 public class RandomMove implements Action {
+
     @Override
     public int perform(Creature source, Map map) {
-        Location currentLocation =  map.getTile(source).getLocation();
+        Tile tile =  map.getTile(source);
+        Location currentLocation = null;
+        if(tile != null) {
+            currentLocation = tile.getLocation();
+        }
         int rand = 0;
         do {
             rand = (int) (Math.random() * 3) - 1;
         } while(rand == 0);
-        if(Math.random() > 0.5) {
-            MovementAnimation movementAnimation = new MovementAnimation(source, currentLocation, currentLocation.add(0,rand));
-            if(movementAnimation.isPossible()) movementAnimation.perform();
-            else source.setRunning(false);
-        } else {
-            MovementAnimation movementAnimation = new MovementAnimation(source, currentLocation, currentLocation.add(rand,0));
-            if(movementAnimation.isPossible()) movementAnimation.perform();
-            else source.setRunning(false);
+        if(Math.random() > 0.5 && currentLocation != null) {
+            if(!MovementHandler.move(source, currentLocation, currentLocation.add(0,rand))) source.setRunning(false);
+        } else if(currentLocation != null) {
+            if(!MovementHandler.move(source, currentLocation, currentLocation.add(rand,0))) source.setRunning(false);
         }
         /*
         int rand = 0;

@@ -1,8 +1,10 @@
 package creatures;
 
 import creatures.actions.Action;
+import environment.Edible;
 import environment.TileHoldable;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 
 public class DNA {
@@ -19,6 +21,7 @@ public class DNA {
      */
     public HashMap<Action, Double> tendencies = new HashMap<Action, Double>();
     public HashMap<String, Double> tendenciesParameters = new HashMap<String, Double>();
-    public HashMap<Class<? extends TileHoldable>, Double> trackedEntities = new HashMap<>();
+    public HashMap<Class<? extends TileHoldable>, Double> trackedEntities = new HashMap<Class<? extends TileHoldable>, Double>();
+    public ArrayList<Class< ? extends Edible>> diet = new ArrayList<Class< ? extends Edible>>();
 
 }

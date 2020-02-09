@@ -5,6 +5,7 @@ import creatures.actions.Action;
 import creatures.actions.ActionManager;
 import creatures.list.Rabbit;
 import creatures.list.Wolf;
+import environment.Food;
 import environment.Location;
 import environment.Map;
 import rendering.DrawingHandler;
@@ -23,18 +24,23 @@ public class GameManager {
 
     public void start() {
         //Initialize update animals task
-        Rabbit rabbit = new Rabbit(DrawingHandler.NONE);
+        Food food = new Food();
+        map.add(food, new Location(20,39));
         Wolf wolf = new Wolf(DrawingHandler.NONE);
-        map.addCreature(rabbit, new Location(8, 8));
-        map.addCreature(wolf, new Location(0, 0));
-        /*
-        for(int k = 0; k < 12; k++) {
-            for(int l = 0; l < 8; l++) {
-                Wolf wolf4 = new Wolf(DrawingHandler.NONE);
-                map.addCreature(wolf4, new Location(k+6, l+6));
+        for(int k = 12; k < 19; k++) {
+            for(int l = 12; l < 30; l++) {
+                Rabbit rabbit1 = new Rabbit(DrawingHandler.NONE);
+                map.addCreature(rabbit1, new Location(k, l));
             }
         }
-         */
+        map.addCreature(wolf, new Location(0, 0));
+
+        for(int k = 0; k < 3; k++) {
+            for(int l = 0; l < 3; l++) {
+                Wolf wolf4 = new Wolf(DrawingHandler.NONE);
+                map.addCreature(wolf4, new Location(k, l));
+            }
+        }
         Thread thread = new Thread(() -> {
             while(true) {
                 try {

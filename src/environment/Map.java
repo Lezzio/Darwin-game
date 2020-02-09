@@ -13,6 +13,7 @@ import javafx.scene.layout.Pane;
 import javafx.scene.layout.TilePane;
 
 import java.util.*;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 public class Map extends Pane {
 
@@ -23,7 +24,7 @@ public class Map extends Pane {
     private Group secondPlan = new Group();
     private int row;
     private int col;
-    private ArrayList<Creature> creatures = new ArrayList<Creature>();
+    private CopyOnWriteArrayList<Creature> creatures = new CopyOnWriteArrayList<Creature>();
     private Tile[][] tiles;
 
     public Map(double maxWidth, double maxHeight) {
@@ -43,7 +44,7 @@ public class Map extends Pane {
         for(int i = 1; i <= col * row; i++) {
             //TODO : Implement Drawable for tiles (Tile)
             final ImageView tileView = new ImageView(texture);
-            tileView.setViewport(new Rectangle2D(0, 0, 48, 48)); //Temporary ugly one
+            tileView.setViewport(new Rectangle2D(975, 62, 48, 48)); //Temporary ugly one
             ground.getChildren().add(tileView);
             tiles[i % row][j] = new Tile(new Location(i % row, j));
             if(i % row == 0) {
@@ -74,14 +75,21 @@ public class Map extends Pane {
         }
         return available;
     }
+    public boolean add(TileHoldable tileHoldable, Location location) {
+        //TODO Is available!!!!
+        Tile tile = tiles[location.getRow()][location.getCol()];
+        tile.add(tileHoldable);
+        tileHoldable.setTile(tile);
+        return true;
+    }
     public void removeCreature(Creature creature) {
         //TODO remove creature from Tile
-        getTile(creature).removeCreature();
+        getTile(creature).remove(creature);
         creatures.remove(creature);
         //Remove graphics
         secondPlan.getChildren().remove(creature.getDrawing());
     }
-    public ArrayList<Creature> getCreatures() {
+    public CopyOnWriteArrayList<Creature> getCreatures() {
         return creatures;
     }
     public Tile getTile(int row, int col) {
@@ -108,8 +116,8 @@ public class Map extends Pane {
     public boolean isInside(Location loc) {
         return loc.isInside(tiles);
     }
-    public synchronized void move(Creature target, Tile from, Tile to) {
-        from.removeCreature();
+    public void move(Creature target, Tile from, Tile to) {
+        from.remove(target);
         to.add(target);
         target.setTile(to);
     }

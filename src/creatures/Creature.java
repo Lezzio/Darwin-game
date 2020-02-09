@@ -1,5 +1,6 @@
 package creatures;
 
+import environment.Edible;
 import environment.Location;
 import environment.Tile;
 import environment.TileHoldable;
@@ -7,7 +8,7 @@ import javafx.scene.Node;
 import rendering.Drawable;
 import rendering.DrawingHandler;
 
-public abstract class Creature implements Livable, Mutable, TileHoldable, Drawable {
+public abstract class Creature implements Livable, Edible, Mutable, TileHoldable, Drawable {
 
     //Attributs
     protected DNA dna;

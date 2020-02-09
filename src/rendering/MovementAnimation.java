@@ -2,6 +2,7 @@ package rendering;
 
 import core.DarwinGame;
 import creatures.Creature;
+import creatures.DNA;
 import environment.Location;
 import environment.Tile;
 import javafx.animation.Animation;
@@ -14,35 +15,16 @@ import javafx.util.Duration;
 
 public class MovementAnimation {
 
-    private TranslateTransition translate;
-    private Creature target;
-    private Location from;
-    private Location to;
-
-    public MovementAnimation(Creature target, Location from, Location to) {
-        this.target = target;
-        this.from = from;
-        this.to = to;
-    }
-    public boolean isPossible() {
-        boolean available = false;
-        if(DarwinGame.map.isInside(to)) {
-            available = DarwinGame.map.getTile(to).isAvailable();
-        }
-        return available;
-    }
-
     /**
      * IMPORTANT check with isPossible before performing this method!
      * @return
      */
-    public void perform() {
-        //Move creature on the map
-        DarwinGame.map.move(target, from, to);
+    public static void perform(Creature target, Location from, Location to) {
+        DNA dna = target.getDNA();
 
         //Step 1 - Translation
-        int duration = 600; //Add speed equation;
-        translate = new TranslateTransition();
+        int duration = dna.traits.get("speed");
+        TranslateTransition translate = new TranslateTransition();
         int tileSize = DarwinGame.map.getTileSize();
         int col = to.getCol() - from.getCol();
         int row = to.getRow() - from.getRow();
@@ -71,9 +53,6 @@ public class MovementAnimation {
         //Add to the queue on the JavaFX Thread
         Platform.runLater(translate::play);
         Platform.runLater(animation::play);
-    }
-    public boolean isDone() {
-        return translate.getStatus().equals(Animation.Status.STOPPED);
     }
 
     //TranslationTransition, setOnClick to display DNA and stats

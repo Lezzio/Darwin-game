@@ -4,46 +4,43 @@ import creatures.Creature;
 
 import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.stream.Collectors;
 
 public class Tile {
 
     private Location location;
     private ArrayList<TileHoldable> holdables = new ArrayList<TileHoldable>();
-    private Creature creature;
 
     public Tile(Location location) {
         this.location = location;
     }
 
-    public void add(Creature creature) {
-        this.creature = creature;
-        holdables.add(creature);
-    }
     public void add(TileHoldable holdable) {
         holdables.add(holdable);
-    }
-    public void removeCreature() {
-        holdables.remove(creature);
-        creature = null;
     }
     public void remove(TileHoldable holdable) {
         holdables.remove(holdable);
     }
     public Creature getCreature() {
-        return creature;
+        Object[] objects = holdables.stream().filter(th -> th instanceof Creature).toArray();
+        return objects.length > 0 ? (Creature) objects[0] : null;
     }
+
+    /**
+     * Strict available checking, no obstacle nor creature on the tile
+     */
     public boolean isAvailable() {
         boolean obstacle = false;
         Iterator<TileHoldable> iterator = holdables.iterator();
         while(iterator.hasNext() && !obstacle) {
-            if(iterator.next().isObstacle()) {
+            if (iterator.next().isObstacle()) {
                 obstacle = true;
             }
         }
-        return creature == null && !obstacle;
+        return getCreature() == null && !obstacle;
     }
     public boolean isEmpty() {
-        return creature == null && holdables.isEmpty();
+        return holdables.isEmpty();
     }
     public Location getLocation() {
         return location;

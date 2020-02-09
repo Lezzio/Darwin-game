@@ -6,6 +6,8 @@ import environment.Location;
 import environment.Map;
 import environment.Tile;
 import environment.TileHoldable;
+import javafx.application.Platform;
+import rendering.MovementAnimation;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -16,12 +18,10 @@ public class MovementHandler {
         if(from.getCol() != to.getCol()) {
             int diffCol = to.getCol() - from.getCol();
             int unitCol = diffCol/Math.abs(diffCol);
-            System.out.println("Col diff -> " + unitCol);
             return from.add(0, unitCol);
         } else if(from.getRow() != to.getRow()) {
             int diffRow = to.getRow() - from.getRow();
             int unitRow = diffRow/Math.abs(diffRow);
-            System.out.println("Row diff -> " + (unitRow));
             return from.add(unitRow, 0);
         }
         return to;
@@ -51,5 +51,54 @@ public class MovementHandler {
             }
         }
         return closestHoldable;
+    }
+
+    /**
+     * @return return false if the movement wasn't possible
+     */
+    public static boolean move(Creature target, Location from, Location to) {
+        MovementType movementType = isPossible(target, to);
+        Map map = DarwinGame.map;
+        if(movementType == MovementType.POSSIBLE) {
+            //Move creature on the map
+            map.move(target, from, to);
+            //Launch the animation movement
+            MovementAnimation.perform(target, from, to);
+            return true;
+        }
+        if(movementType == MovementType.EAT) {
+            //Properly remove the eaten element
+            //TODO Implement eating food
+            Creature eaten = map.getTile(to).getCreature();
+            Platform.runLater(() -> map.removeCreature(eaten));
+            //Move creature on the map
+            map.move(target, from, to);
+            //Launch the animation movement
+            MovementAnimation.perform(target, from, to);
+            return true;
+        }
+        return false;
+    }
+    public static MovementType isPossible(Creature source, Location to) {
+        MovementType movementType = MovementType.IMPOSSIBLE;
+        Map map = DarwinGame.map;
+        if(map.isInside(to)) {
+            //Available ?
+            if(DarwinGame.map.getTile(to).isAvailable()) {
+                movementType = MovementType.POSSIBLE;
+            }
+            //TODO Implement eating food
+            //Edible ?
+            Creature target = map.getTile(to).getCreature();
+            if(target != null) {
+                if (source.dna.diet.contains(target.getClass())) {
+                    movementType = MovementType.EAT;
+                }
+            }
+        }
+        return movementType;
+    }
+    enum MovementType {
+        IMPOSSIBLE, POSSIBLE, EAT
     }
 }
