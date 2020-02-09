@@ -2,10 +2,7 @@ package creatures;
 
 import core.DarwinGame;
 import creatures.list.Wolf;
-import environment.Location;
-import environment.Map;
-import environment.Tile;
-import environment.TileHoldable;
+import environment.*;
 import javafx.application.Platform;
 import rendering.MovementAnimation;
 
@@ -66,11 +63,22 @@ public class MovementHandler {
             MovementAnimation.perform(target, from, to);
             return true;
         }
-        if(movementType == MovementType.EAT) {
-            //Properly remove the eaten element
-            //TODO Implement eating food
+        if(movementType == MovementType.EAT_CREATURE) {
+            //Properly remove the eaten creature
             Creature eaten = map.getTile(to).getCreature();
             Platform.runLater(() -> map.removeCreature(eaten));
+            //Move creature on the map
+            map.move(target, from, to);
+            //Launch the animation movement
+            MovementAnimation.perform(target, from, to);
+            return true;
+        }
+        if(movementType == MovementType.EAT_FOOD) {
+            //Properly remove the eaten food
+            Tile tile = map.getTile(to);
+            Food food = tile.getFood();
+            Platform.runLater(() -> map.removeFood(food));
+            tile.remove(food);
             //Move creature on the map
             map.move(target, from, to);
             //Launch the animation movement
@@ -87,18 +95,24 @@ public class MovementHandler {
             if(DarwinGame.map.getTile(to).isAvailable()) {
                 movementType = MovementType.POSSIBLE;
             }
-            //TODO Implement eating food
-            //Edible ?
+            //Edible creature ?
             Creature target = map.getTile(to).getCreature();
             if(target != null) {
                 if (source.dna.diet.contains(target.getClass())) {
-                    movementType = MovementType.EAT;
+                    movementType = MovementType.EAT_CREATURE;
+                }
+            }
+            //Edible food ?
+            Food food = map.getTile(to).getFood();
+            if(food != null) {
+                if(source.dna.diet.contains(food.getClass())) {
+                    movementType = MovementType.EAT_FOOD;
                 }
             }
         }
         return movementType;
     }
     enum MovementType {
-        IMPOSSIBLE, POSSIBLE, EAT
+        IMPOSSIBLE, POSSIBLE, EAT_CREATURE, EAT_FOOD
     }
 }

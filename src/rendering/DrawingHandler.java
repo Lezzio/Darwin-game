@@ -1,6 +1,7 @@
 package rendering;
 
 import creatures.Creature;
+import environment.Food;
 import javafx.geometry.Rectangle2D;
 import javafx.scene.Node;
 import javafx.scene.image.Image;
@@ -29,8 +30,20 @@ public class DrawingHandler {
             result = new ImageView(image);
             ((ImageView) result).setViewport(new Rectangle2D(0, 0, 48, 48));
         }
+        if(drawable instanceof Food) {
+            Image image = new Image(drawable.getAddress());
+            result = new ImageView((image));
+            ((ImageView) result).setViewport(new Rectangle2D(4,4,24,24));
+        }
         return result;
     }
+
+    /**
+     * The orientation corresponds to the multiplier for the sprite image
+     * @param directionX
+     * @param directionY
+     * @return
+     */
     public static int getOrientation(int directionX, int directionY) {
         if(directionX == 1) return RIGHT;
         if(directionX == -1) return LEFT;

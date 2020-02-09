@@ -40,6 +40,7 @@ public class Map extends Pane {
     }
     public void generateGround() {
         Image texture = new Image("ground_texture.png");
+        //TODO Implement it a lot more easily, just double for and [index] = col + row
         int j = 0; //Row
         for(int i = 1; i <= col * row; i++) {
             //TODO : Implement Drawable for tiles (Tile)
@@ -52,10 +53,10 @@ public class Map extends Pane {
             }
         }
     }
-    public int getRow() {
-        return row;
-    }
     public int getCol() {
+        return col;
+    }
+    public int getRow() {
         return row;
     }
     /**
@@ -75,19 +76,34 @@ public class Map extends Pane {
         }
         return available;
     }
+    public boolean addFood(Food food, Location location) {
+        boolean available = add(food, location);
+        if(available) {
+            //Add graphics
+            Node drawing = food.getDrawing();
+            System.out.println(drawing);
+            secondPlan.getChildren().add(drawing);
+            drawing.relocate(location.getCol() * tileSize, location.getRow() * tileSize);
+        }
+        return available;
+    }
     public boolean add(TileHoldable tileHoldable, Location location) {
-        //TODO Is available!!!!
-        Tile tile = tiles[location.getRow()][location.getCol()];
-        tile.add(tileHoldable);
-        tileHoldable.setTile(tile);
-        return true;
+        Tile tile = getTile(location);
+        boolean available = tile.isAvailable();
+        if(available) {
+            tile.add(tileHoldable);
+            tileHoldable.setTile(tile);
+        }
+        return available;
     }
     public void removeCreature(Creature creature) {
-        //TODO remove creature from Tile
         getTile(creature).remove(creature);
         creatures.remove(creature);
         //Remove graphics
         secondPlan.getChildren().remove(creature.getDrawing());
+    }
+    public void removeFood(Food food) {
+        secondPlan.getChildren().remove(food.getDrawing());
     }
     public CopyOnWriteArrayList<Creature> getCreatures() {
         return creatures;
@@ -127,5 +143,19 @@ public class Map extends Pane {
 
     public Tile[][] getTiles() {
         return tiles;
+    }
+
+    /**
+     * @param available : if must be available or not
+     * @return
+     */
+    public Tile getRandomTile(boolean available) {
+        Tile tile = null;
+        do {
+            int randomCol = (int) (Math.random() * getCol());
+            int randomRow = (int) (Math.random() * getRow());
+            tile = getTile(randomRow, randomCol);
+        } while(tile.isAvailable() != available);
+        return tile;
     }
 }

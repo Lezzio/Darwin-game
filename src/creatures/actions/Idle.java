@@ -1,6 +1,7 @@
 package creatures.actions;
 
 import creatures.Creature;
+import creatures.DNA;
 import environment.Map;
 import javafx.application.Platform;
 
@@ -9,25 +10,25 @@ import java.util.TimerTask;
 
 public class Idle implements Action {
 
-    private int idleTime;
-
-    public Idle(int idleTime) {
-        this.idleTime = idleTime;
-    }
     @Override
     public int perform(Creature source, Map map) {
-        TimerTask task = new TimerTask() {
-            public void run() {
-                source.setRunning(false);
-            }
-        };
-        Timer timer = new Timer();
-        timer.schedule(task, idleTime);
+        DNA dna = source.getDNA();
+        if(dna.tendenciesParameters.containsKey("idleTime")) {
+            double idleTime = dna.tendenciesParameters.get("idleTime");
+            TimerTask task = new TimerTask() {
+                public void run() {
+                    source.setRunning(false);
+                }
+            };
+            Timer timer = new Timer();
+            timer.schedule(task, (long) idleTime);
+        }
+        source.setRunning(false);
         return 0;
     }
 
     @Override
     public double getCost() {
-        return 0;
+        return 0.25;
     }
 }

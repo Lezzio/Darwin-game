@@ -4,7 +4,6 @@ import creatures.Creature;
 
 import java.util.ArrayList;
 import java.util.Iterator;
-import java.util.stream.Collectors;
 
 public class Tile {
 
@@ -25,11 +24,18 @@ public class Tile {
         Object[] objects = holdables.stream().filter(th -> th instanceof Creature).toArray();
         return objects.length > 0 ? (Creature) objects[0] : null;
     }
+    public Food getFood() {
+        Object[] objects = holdables.stream().filter(th -> th instanceof Food).toArray();
+        return objects.length > 0 ? (Food) objects[0] : null;
+    }
 
     /**
-     * Strict available checking, no obstacle nor creature on the tile
+     * Strict available checking, no obstacle nor creature/food on the tile
      */
     public boolean isAvailable() {
+        return !isObstaclePresent() && !isCreaturePresent() && !isFoodPresent();
+    }
+    public boolean isObstaclePresent() {
         boolean obstacle = false;
         Iterator<TileHoldable> iterator = holdables.iterator();
         while(iterator.hasNext() && !obstacle) {
@@ -37,7 +43,13 @@ public class Tile {
                 obstacle = true;
             }
         }
-        return getCreature() == null && !obstacle;
+        return obstacle;
+    }
+    public boolean isCreaturePresent() {
+        return getCreature() != null;
+    }
+    public boolean isFoodPresent() {
+        return getFood() != null;
     }
     public boolean isEmpty() {
         return holdables.isEmpty();
@@ -49,4 +61,5 @@ public class Tile {
     public ArrayList<TileHoldable> getHoldables() {
         return holdables;
     }
+
 }

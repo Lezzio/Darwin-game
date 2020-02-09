@@ -37,6 +37,6 @@ public class TrackEntity implements  Action {
 
     @Override
     public double getCost() {
-        return 0;
+        return 1;
     }
 }

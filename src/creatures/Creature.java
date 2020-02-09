@@ -1,7 +1,6 @@
 package creatures;
 
 import environment.Edible;
-import environment.Location;
 import environment.Tile;
 import environment.TileHoldable;
 import javafx.scene.Node;
@@ -19,9 +18,9 @@ public abstract class Creature implements Livable, Edible, Mutable, TileHoldable
     private Tile tile;
     private boolean running;
 
-    public Creature(int params) {
+    public Creature(int params, DNA dna) {
         draw(params);
-        dna = new DNA();
+        this.dna = dna;
     }
 
     public Tile getTile() {
@@ -36,30 +35,22 @@ public abstract class Creature implements Livable, Edible, Mutable, TileHoldable
     public void setRunning(boolean running) {
         this.running = running;
     }
+    @Override
     public void draw(int param) {
         drawing = DrawingHandler.draw(this, param);
     }
+    @Override
     public Node getDrawing() {
         return drawing;
-    }
-    @Override
-    public void reproduce() {
-
     }
 
     @Override
     public double getHealth() {
-        return 0;
+        return health;
     }
-
     @Override
-    public double modifyHealth() {
-        return 0;
-    }
-
-    @Override
-    public double setHealth() {
-        return 0;
+    public void setHealth(double health) {
+        this.health = health;
     }
 
     @Override
@@ -84,6 +75,6 @@ public abstract class Creature implements Livable, Edible, Mutable, TileHoldable
 
     @Override
     public DNA mutate() {
-        return null;
+        return dna;
     }
 }
