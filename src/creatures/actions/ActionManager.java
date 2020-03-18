@@ -12,7 +12,7 @@ public class ActionManager {
      */
     public static Action getAction(Creature creature) {
         DNA dna = creature.getDNA();
-        RandomList<Action> actions = RandomList.from(dna.tendencies);
+        RandomList<Action> actions = RandomList.from(dna.tendencies); //Recreate each time the RandomList to update the weights
         return actions.getRandomElement();
     }
 }

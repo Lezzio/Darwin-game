@@ -20,11 +20,12 @@ public class Rabbit extends Creature {
     }
     public Rabbit(int params) {
         super(params, new DNA());
-        dna.tendencies.put(new RandomMove(), 10.0);
-        dna.tendencies.put(new Idle(), 1.0);
+        dna.tendencies.put(new RandomMove(), 1.0);
+        dna.tendencies.put(new Idle(), 10.0);
         HashMap<Class<? extends TileHoldable>, Double> trackedEntities = new HashMap<>();
         trackedEntities.put(Apple.class, 1.0);
-        dna.tendencies.put(new TrackEntity(trackedEntities), 10.0);
+        dna.tendencies.put(new TrackEntity(trackedEntities), 1.0);
+        dna.tendenciesParameters.put("idleTime", 250.0);
         dna.diet.add(Apple.class);
         dna.traits.put("speed", 275);
     }

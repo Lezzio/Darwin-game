@@ -18,7 +18,6 @@ public class RandomList<E> {
         totalWeight += weight;
         randomMap.put(totalWeight, element);
     }
-
     public E getRandomElement() {
         double value = Math.random() * totalWeight;
         return randomMap.higherEntry(value).getValue();

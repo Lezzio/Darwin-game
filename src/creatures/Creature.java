@@ -1,8 +1,11 @@
 package creatures;
 
+import core.DarwinGame;
 import environment.Edible;
+import environment.Map;
 import environment.Tile;
 import environment.TileHoldable;
+import javafx.application.Platform;
 import javafx.scene.Node;
 import rendering.Drawable;
 import rendering.DrawingHandler;
@@ -11,7 +14,7 @@ public abstract class Creature implements Livable, Edible, Mutable, TileHoldable
 
     //Attributs
     protected DNA dna;
-    private double health;
+    private double health = 20.0;
 
     //Environment
     private Node drawing;
@@ -51,16 +54,21 @@ public abstract class Creature implements Livable, Edible, Mutable, TileHoldable
     @Override
     public void setHealth(double health) {
         this.health = health;
+        if(this.health <= 0.0) {
+            die();
+        }
     }
 
     @Override
     public boolean isAlive() {
-        return false;
+        return this.health < 0.0;
     }
 
     @Override
     public boolean die() {
-        return false;
+        Map map = DarwinGame.map;
+        Platform.runLater(() -> map.removeCreature(this));
+        return true;
     }
 
     @Override

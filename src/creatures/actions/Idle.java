@@ -22,13 +22,14 @@ public class Idle implements Action {
             };
             Timer timer = new Timer();
             timer.schedule(task, (long) idleTime);
+        } else {
+            source.setRunning(false);
         }
-        source.setRunning(false);
         return 0;
     }
 
     @Override
     public double getCost() {
-        return 0.25;
+        return 0.05;
     }
 }

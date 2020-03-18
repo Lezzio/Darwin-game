@@ -60,6 +60,7 @@ public class GameManager {
      */
     public void updateAnimals() {
         for(Creature creature : map.getCreatures()) {
+            //Update action
             if (!creature.isRunning()) {
                 creature.setRunning(true);
                 Action action = ActionManager.getAction(creature);
@@ -67,8 +68,13 @@ public class GameManager {
                 //Apply health cost
                 double newHealth = creature.getHealth() - action.getCost();
                 creature.setHealth(newHealth);
-                //Reproduce & mutate
-                if(delayReproduce++ > 150) {
+                System.out.println(creature.getClass().getName() + " : " + creature.getHealth());
+            }
+        }
+        //TODO Merge with the upper for to avoid iterating twice
+        //Reproduce & mutate
+        if(delayReproduce++ > 250) { //Called every 20ms with a count of 1000
+        for(Creature creature : map.getCreatures()) {
                 Creature reproducedCreature = creature.reproduce();
                 //Iterate the surrounding tiles
                 Location location = creature.getTile().getLocation();
@@ -76,10 +82,10 @@ public class GameManager {
                 int col = location.getCol();
                 Tile lastAvailable = null;
                 for(int i = row - 2; i < row; i++) {
-                    for(int k = col - 2; k <= col; k++) {
+                    for(int j = col - 2; j <= col; j++) {
                         //Check for array out of bound exception
-                        if(i >= 0 && i < map.getRow() && k >= 0 && k < map.getCol()) {
-                            Tile tile = map.getTile(i, k);
+                        if(i >= 0 && i < map.getRow() && j >= 0 && j < map.getCol()) {
+                            Tile tile = map.getTile(i, j);
                             if(tile.isAvailable()) {
                                 lastAvailable = tile;
                             }
@@ -89,10 +95,9 @@ public class GameManager {
                 if(lastAvailable != null) {
                     Tile finalLastAvailable = lastAvailable;
                     Platform.runLater(() -> map.addCreature(reproducedCreature, finalLastAvailable.getLocation()));
-                 }
-                    delayReproduce = 0;
                 }
             }
+            delayReproduce = 0;
         }
     }
 

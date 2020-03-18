@@ -34,7 +34,6 @@ public class SpriteAnimation extends Transition {
     protected void interpolate(double k) {
         final int index = (int) Math.floor(k * columns);
         final int x = (index % columns) * width  + offsetX;
-        final int y = offsetY;
-        imageView.setViewport(new Rectangle2D(x, y, width, height));
+        imageView.setViewport(new Rectangle2D(x, offsetY, width, height));
     }
 }

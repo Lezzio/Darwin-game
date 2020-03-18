@@ -81,7 +81,6 @@ public class Map extends Pane {
         if(available) {
             //Add graphics
             Node drawing = food.getDrawing();
-            System.out.println(drawing);
             secondPlan.getChildren().add(drawing);
             drawing.relocate(location.getCol() * tileSize, location.getRow() * tileSize);
         }
