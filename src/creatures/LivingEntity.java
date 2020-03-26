@@ -1,9 +1,10 @@
 package creatures;
 
-public interface Livable {
+public interface LivingEntity {
     public double getHealth();
+    public void addHealth(double health);
     public void setHealth(double health);
     public Creature reproduce();
     public boolean isAlive();
-    public boolean die();
+    public void die();
 }

@@ -1,5 +1,6 @@
 package creatures.actions;
 
+import creatures.BoundedDouble;
 import creatures.Creature;
 import creatures.DNA;
 import environment.Map;
@@ -14,7 +15,7 @@ public class Idle implements Action {
     public int perform(Creature source, Map map) {
         DNA dna = source.getDNA();
         if(dna.tendenciesParameters.containsKey("idleTime")) {
-            double idleTime = dna.tendenciesParameters.get("idleTime");
+            double idleTime = ((BoundedDouble) dna.tendenciesParameters.get("idleTime")).getValue();
             TimerTask task = new TimerTask() {
                 public void run() {
                     source.setRunning(false);

@@ -71,6 +71,8 @@ public class MovementHandler {
             map.move(target, from, to);
             //Launch the animation movement
             MovementAnimation.perform(target, from, to);
+            //Add health (edible value)
+            target.addHealth(eaten.getValue());
             return true;
         }
         if(movementType == MovementType.EAT_FOOD) {
@@ -92,7 +94,7 @@ public class MovementHandler {
         Map map = DarwinGame.map;
         if(map.isInside(to)) {
             //Available ?
-            if(DarwinGame.map.getTile(to).isAvailable()) {
+            if(map.getTile(to).isAvailable()) {
                 movementType = MovementType.POSSIBLE;
             }
             //Edible creature ?

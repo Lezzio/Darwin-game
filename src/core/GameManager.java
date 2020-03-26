@@ -68,7 +68,6 @@ public class GameManager {
                 //Apply health cost
                 double newHealth = creature.getHealth() - action.getCost();
                 creature.setHealth(newHealth);
-                System.out.println(creature.getClass().getName() + " : " + creature.getHealth());
             }
         }
         //TODO Merge with the upper for to avoid iterating twice

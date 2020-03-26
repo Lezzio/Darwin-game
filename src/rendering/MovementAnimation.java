@@ -23,7 +23,7 @@ public class MovementAnimation {
         DNA dna = target.getDNA();
 
         //Step 1 - Translation
-        int duration = dna.traits.get("speed");
+        double duration = dna.traits.get("speed").getValue();
         TranslateTransition translate = new TranslateTransition();
         int tileSize = DarwinGame.map.getTileSize();
         int col = to.getCol() - from.getCol();
@@ -45,7 +45,7 @@ public class MovementAnimation {
                 3, 0,
                 48*orientation, 48,48
         );
-        animation.setCycleCount(duration / cycleDuration);
+        animation.setCycleCount((int) (duration / cycleDuration));
 
         translate.setOnFinished(event -> {
             target.setRunning(false);

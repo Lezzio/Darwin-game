@@ -1,6 +1,5 @@
 package environment;
 
-//Serializable for the DataFormat transfer
 public class Location {
 
     private int col;

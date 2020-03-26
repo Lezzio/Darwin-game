@@ -39,6 +39,6 @@ public abstract class Food implements TileHoldable, Edible, Drawable {
 
     @Override
     public int getValue() {
-        return 0;
+        return 1;
     }
 }

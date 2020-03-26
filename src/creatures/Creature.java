@@ -10,7 +10,11 @@ import javafx.scene.Node;
 import rendering.Drawable;
 import rendering.DrawingHandler;
 
-public abstract class Creature implements Livable, Edible, Mutable, TileHoldable, Drawable {
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashMap;
+
+public abstract class Creature implements LivingEntity, Edible, Mutable, TileHoldable, Drawable {
 
     //Attributs
     protected DNA dna;
@@ -52,6 +56,10 @@ public abstract class Creature implements Livable, Edible, Mutable, TileHoldable
         return health;
     }
     @Override
+    public void addHealth(double health) {
+        this.health += health;
+    }
+    @Override
     public void setHealth(double health) {
         this.health = health;
         if(this.health <= 0.0) {
@@ -65,10 +73,9 @@ public abstract class Creature implements Livable, Edible, Mutable, TileHoldable
     }
 
     @Override
-    public boolean die() {
+    public void die() {
         Map map = DarwinGame.map;
         Platform.runLater(() -> map.removeCreature(this));
-        return true;
     }
 
     @Override
@@ -83,6 +90,21 @@ public abstract class Creature implements Livable, Edible, Mutable, TileHoldable
 
     @Override
     public DNA mutate() {
-        return dna;
+        DNA mutatedDNA = dna; //Initialize with default value (same as previous per default)
+        try {
+            mutatedDNA = dna.clone();
+        } catch (CloneNotSupportedException e) {
+            e.printStackTrace();
+        }
+        //Now apply a random varation (mutation) on a one of the DNA elements
+        ArrayList<BoundedDouble> boundedDoubles = new ArrayList<>();
+
+        boundedDoubles.addAll(dna.traits.values());
+        boundedDoubles.addAll(dna.tendencies.values());
+
+        //Specific parameters
+        boundedDoubles.addAll(((HashMap<Class<? extends TileHoldable>, BoundedDouble>) dna.tendenciesParameters.get("trackedEntities")).values());
+
+        return mutatedDNA;
     }
 }

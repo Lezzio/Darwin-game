@@ -2,13 +2,13 @@ package environment;
 
 import creatures.Creature;
 
-import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 public class Tile {
 
     private Location location;
-    private ArrayList<TileHoldable> holdables = new ArrayList<TileHoldable>();
+    private CopyOnWriteArrayList<TileHoldable> holdables = new CopyOnWriteArrayList<TileHoldable>();
 
     public Tile(Location location) {
         this.location = location;
@@ -58,7 +58,7 @@ public class Tile {
         return location;
     }
 
-    public ArrayList<TileHoldable> getHoldables() {
+    public CopyOnWriteArrayList<TileHoldable> getHoldables() {
         return holdables;
     }
 

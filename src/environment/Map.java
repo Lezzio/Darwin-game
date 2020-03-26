@@ -95,8 +95,12 @@ public class Map extends Pane {
         }
         return available;
     }
+    //Add synchronized ?
     public void removeCreature(Creature creature) {
-        getTile(creature).remove(creature);
+        Tile tile = getTile(creature);
+        if(tile != null) {
+            tile.remove(creature);
+        }
         creatures.remove(creature);
         //Remove graphics
         secondPlan.getChildren().remove(creature.getDrawing());
