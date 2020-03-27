@@ -1,6 +1,7 @@
 package creatures.actions;
 
 import creatures.Creature;
+import creatures.DNA;
 import creatures.MovementHandler;
 import environment.Location;
 import environment.Map;
@@ -28,7 +29,7 @@ public class RandomMove implements Action {
     }
 
     @Override
-    public double getCost() {
-        return 1;
+    public double getCost(DNA dna) {
+        return 1 + (dna.traits.get("speed").getValue() / 1000);
     }
 }

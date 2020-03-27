@@ -18,20 +18,18 @@ import java.util.HashMap;
 public class Rabbit extends Creature {
 
     //Construct with the appropriate behaviours
-    public Rabbit(int params, DNA dna) {
-        super(params, dna);
+    public Rabbit(DNA dna) {
+        super(DrawingHandler.NONE, dna, 30.0);
     }
-    public Rabbit(int params) {
-        super(params, new DNA());
+    public Rabbit() {
+        this(new DNA());
         dna.tendencies.put(new RandomMove(), new BoundedDouble(1.0));
-        dna.tendencies.put(new Idle(), new BoundedDouble(5.0));
-        HashMap<Class<? extends TileHoldable>, BoundedDouble> trackedEntities = new HashMap<>();
-        trackedEntities.put(Apple.class, new BoundedDouble(1.0));
-        dna.tendenciesParameters.put("trackedEntities", trackedEntities);
+        dna.tendencies.put(new Idle(), new BoundedDouble(1.0));
+        dna.trackedEntities.put(Apple.class, new BoundedDouble(1.0));
         dna.tendencies.put(new TrackEntity(), new BoundedDouble(1.0));
-        dna.tendenciesParameters.put("idleTime", new BoundedDouble(250.0, 100, 2000));
+        dna.tendenciesParameters.put("idleTime", new BoundedDouble(200, 100, 300));
         dna.diet.add(Apple.class);
-        dna.traits.put("speed", new BoundedDouble(275.0, 150, 1500));
+        dna.traits.put("speed", new BoundedDouble(300.0, 150, 1500));
     }
 
     public String getAddress() {
@@ -39,18 +37,13 @@ public class Rabbit extends Creature {
     }
 
     @Override
-    public boolean isObstacle() {
-        return false;
-    }
-
-    @Override
     public int getValue() {
-        return 5;
+        return 60;
     }
 
     @Override
     public Rabbit reproduce() {
         DNA dna = super.mutate();
-        return new Rabbit(DrawingHandler.NONE, dna);
+        return new Rabbit(dna);
     }
 }

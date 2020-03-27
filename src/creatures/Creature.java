@@ -25,14 +25,24 @@ public abstract class Creature implements LivingEntity, Edible, Mutable, TileHol
     private Tile tile;
     private boolean running;
 
-    public Creature(int params, DNA dna) {
+    public Creature(int params, DNA dna, double health) {
         draw(params);
         this.dna = dna;
+        this.health = health;
+    }
+    public Creature(int params, DNA dna) {
+        this(params, dna, 20);
     }
 
+    @Override
+    public boolean isObstacle() {
+        return false;
+    }
+    @Override
     public Tile getTile() {
         return tile;
     }
+    @Override
     public void setTile(Tile tile) {
         this.tile = tile;
     }
@@ -69,7 +79,7 @@ public abstract class Creature implements LivingEntity, Edible, Mutable, TileHol
 
     @Override
     public boolean isAlive() {
-        return this.health < 0.0;
+        return this.health > 0.0;
     }
 
     @Override
@@ -84,27 +94,34 @@ public abstract class Creature implements LivingEntity, Edible, Mutable, TileHol
     }
 
     @Override
-    public void setDNA() {
+    public void setDNA(DNA dna) {
         this.dna = dna;
     }
 
     @Override
     public DNA mutate() {
         DNA mutatedDNA = dna; //Initialize with default value (same as previous per default)
-        try {
-            mutatedDNA = dna.clone();
-        } catch (CloneNotSupportedException e) {
-            e.printStackTrace();
+
+        //Mutate with probability
+        if(Math.random() > 0.66) {
+            try {
+                mutatedDNA = dna.clone();
+            } catch (CloneNotSupportedException e) {
+                e.printStackTrace();
+            }
+
+            //Now apply a random varation (mutation) on a one of the DNA elements
+            ArrayList<BoundedDouble> boundedDoubles = new ArrayList<>();
+
+            boundedDoubles.addAll(mutatedDNA.traits.values());
+            boundedDoubles.addAll(mutatedDNA.tendencies.values());
+            boundedDoubles.addAll(mutatedDNA.trackedEntities.values());
+            boundedDoubles.addAll(mutatedDNA.fledEntities.values());
+
+            int randomIndex = (int) (Math.random() * boundedDoubles.size());
+            BoundedDouble boundedDouble = boundedDoubles.get(randomIndex);
+            boundedDouble.setValue(boundedDouble.getMin() + Math.random() * boundedDouble.getMax());
         }
-        //Now apply a random varation (mutation) on a one of the DNA elements
-        ArrayList<BoundedDouble> boundedDoubles = new ArrayList<>();
-
-        boundedDoubles.addAll(dna.traits.values());
-        boundedDoubles.addAll(dna.tendencies.values());
-
-        //Specific parameters
-        boundedDoubles.addAll(((HashMap<Class<? extends TileHoldable>, BoundedDouble>) dna.tendenciesParameters.get("trackedEntities")).values());
-
         return mutatedDNA;
     }
 }

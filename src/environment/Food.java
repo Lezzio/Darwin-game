@@ -36,9 +36,4 @@ public abstract class Food implements TileHoldable, Edible, Drawable {
     public void setTile(Tile tile) {
         this.tile = tile;
     }
-
-    @Override
-    public int getValue() {
-        return 1;
-    }
 }

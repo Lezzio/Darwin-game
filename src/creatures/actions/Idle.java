@@ -15,7 +15,7 @@ public class Idle implements Action {
     public int perform(Creature source, Map map) {
         DNA dna = source.getDNA();
         if(dna.tendenciesParameters.containsKey("idleTime")) {
-            double idleTime = ((BoundedDouble) dna.tendenciesParameters.get("idleTime")).getValue();
+            double idleTime = dna.tendenciesParameters.get("idleTime").getValue();
             TimerTask task = new TimerTask() {
                 public void run() {
                     source.setRunning(false);
@@ -30,7 +30,7 @@ public class Idle implements Action {
     }
 
     @Override
-    public double getCost() {
-        return 0.05;
+    public double getCost(DNA dna) {
+        return 0.2;
     }
 }

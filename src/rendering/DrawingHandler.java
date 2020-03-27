@@ -1,11 +1,16 @@
 package rendering;
 
+import core.DarwinGame;
 import creatures.Creature;
 import environment.Food;
+import javafx.event.EventHandler;
 import javafx.geometry.Rectangle2D;
 import javafx.scene.Node;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.MouseEvent;
+
+import java.util.Iterator;
 
 public class DrawingHandler {
 
@@ -23,17 +28,35 @@ public class DrawingHandler {
      * @return
      */
     public static Node draw(Drawable drawable, int param) {
-        Node result = null;
+        ImageView result = null;
         if(drawable instanceof Creature) {
             //If creature, can apply the DNA differences
             Image image = new Image(drawable.getAddress());
             result = new ImageView(image);
-            ((ImageView) result).setViewport(new Rectangle2D(0, 0, 48, 48));
+            result.setViewport(new Rectangle2D(0, 0, 48, 48));
+
+            //TODO Put into the Creature class after the draw(call) on the returned Node
+            result.setOnMouseClicked(new EventHandler<MouseEvent>() {
+                @Override
+                public void handle(MouseEvent mouseEvent) {
+                    Creature target = null;
+                    Iterator<Creature> creatureIterator = DarwinGame.map.getCreatures().iterator();
+                    while(creatureIterator.hasNext() && target == null) {
+                        Creature next = creatureIterator.next();
+                        if(next.getDrawing() == mouseEvent.getSource()) {
+                            target = next;
+                        }
+                    }
+                    System.out.println(target.getClass().getName() + " : ");
+                    System.out.println(target.getHealth());
+                    System.out.println(target.getDNA().tendencies);
+                }
+            });
         }
         if(drawable instanceof Food) {
             Image image = new Image(drawable.getAddress());
             result = new ImageView((image));
-            ((ImageView) result).setViewport(new Rectangle2D(4,4,24,24));
+            result.setViewport(new Rectangle2D(4,4,24,24));
         }
         return result;
     }

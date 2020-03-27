@@ -2,6 +2,7 @@ package creatures.actions;
 
 import creatures.BoundedDouble;
 import creatures.Creature;
+import creatures.DNA;
 import creatures.MovementHandler;
 import environment.Food;
 import environment.Location;
@@ -15,19 +16,20 @@ public class TrackEntity implements  Action {
 
     RandomList<Class<? extends TileHoldable>> entities = new RandomList<>();
 
+    /*
     public TrackEntity(HashMap<Class<? extends TileHoldable>, BoundedDouble> weights) {
         //weights.keySet().forEach(tileHoldable -> entities.add(tileHoldable, weights.get(tileHoldable)));
         entities = RandomList.from(weights);
     }
+     */
     public TrackEntity() {
 
     }
 
     @Override
     public int perform(Creature source, Map map) {
-        @SuppressWarnings("unchecked") //Safe generic parameters cast despite being unchecked
-        HashMap<Class<? extends TileHoldable>, BoundedDouble> trackedEntities = (HashMap<Class<? extends TileHoldable>, BoundedDouble>) source.getDNA().tendenciesParameters.get("trackedEntities");
-        Class<? extends TileHoldable> tileHoldableType = RandomList.from(trackedEntities).getRandomElement();
+        DNA dna = source.getDNA();
+        Class<? extends TileHoldable> tileHoldableType = RandomList.from(dna.trackedEntities).getRandomElement();
         Location from = source.getTile().getLocation();
         TileHoldable tileHoldable = MovementHandler.closestTypeFrom(map, from, tileHoldableType);
         //Check if a trackable entity exists
@@ -41,7 +43,7 @@ public class TrackEntity implements  Action {
         return 0;
     }
     @Override
-    public double getCost() {
-        return 1;
+    public double getCost(DNA dna) {
+        return 1 + (dna.traits.get("speed").getValue() / 1000);
     }
 }

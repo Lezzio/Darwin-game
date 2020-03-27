@@ -63,7 +63,9 @@ public class Map extends Pane {
      * Returns true if the Tile was available, false if not
      */
     public boolean addCreature(Creature creature, Location location) {
-        Tile tile = getTile(location);
+        return addCreature(creature, getTile(location));
+    }
+    public boolean addCreature(Creature creature, Tile tile) {
         boolean available = tile.isAvailable();
         if(available) {
             creatures.add(creature);
@@ -72,9 +74,10 @@ public class Map extends Pane {
             //Add graphics
             Node drawing = creature.getDrawing();
             secondPlan.getChildren().add(drawing);
-            drawing.relocate(location.getCol() * tileSize, location.getRow() * tileSize);
+            drawing.relocate(tile.getLocation().getCol() * tileSize, tile.getLocation().getRow() * tileSize);
         }
         return available;
+
     }
     public boolean addFood(Food food, Location location) {
         boolean available = add(food, location);

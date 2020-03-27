@@ -1,6 +1,6 @@
 package creatures;
 
-public class BoundedDouble {
+public class BoundedDouble implements Cloneable {
 
     private double value;
     private double min;
@@ -23,11 +23,28 @@ public class BoundedDouble {
     public double getValue() {
         return value;
     }
+    public void setValue(double value) {
+        this.value = value;
+    }
     public double getMin() {
         return min;
     }
     public double getMax() {
         return max;
+    }
+
+    @Override
+    public BoundedDouble clone() {
+        try {
+            return (BoundedDouble) super.clone();
+        } catch (CloneNotSupportedException e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+    @Override
+    public String toString() {
+        return String.valueOf(value);
     }
 
 }

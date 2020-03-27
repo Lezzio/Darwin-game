@@ -14,4 +14,9 @@ public class Apple extends Food {
     public String getAddress() {
         return "food_sprite.jpg";
     }
+
+    @Override
+    public int getValue() {
+        return 15;
+    }
 }

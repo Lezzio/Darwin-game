@@ -85,6 +85,8 @@ public class MovementHandler {
             map.move(target, from, to);
             //Launch the animation movement
             MovementAnimation.perform(target, from, to);
+            //Add health (edible value)
+            target.addHealth(food.getValue());
             return true;
         }
         return false;
@@ -93,22 +95,25 @@ public class MovementHandler {
         MovementType movementType = MovementType.IMPOSSIBLE;
         Map map = DarwinGame.map;
         if(map.isInside(to)) {
-            //Available ?
-            if(map.getTile(to).isAvailable()) {
-                movementType = MovementType.POSSIBLE;
-            }
-            //Edible creature ?
-            Creature target = map.getTile(to).getCreature();
-            if(target != null) {
-                if (source.dna.diet.contains(target.getClass())) {
-                    movementType = MovementType.EAT_CREATURE;
+            //Not a strict obstacle (tree, map element...)
+            if(!map.getTile(to).isObstaclePresent()) {
+                //Not held by another creature ?
+                if(!map.getTile(to).isCreaturePresent()) {
+                    movementType = MovementType.POSSIBLE;
                 }
-            }
-            //Edible food ?
-            Food food = map.getTile(to).getFood();
-            if(food != null) {
-                if(source.dna.diet.contains(food.getClass())) {
-                    movementType = MovementType.EAT_FOOD;
+                //Edible creature ?
+                Creature target = map.getTile(to).getCreature();
+                if(target != null) {
+                    if (source.dna.diet.contains(target.getClass())) {
+                        movementType = MovementType.EAT_CREATURE;
+                    }
+                }
+                //Edible food ?
+                Food food = map.getTile(to).getFood();
+                if(food != null) {
+                    if(source.dna.diet.contains(food.getClass())) {
+                        movementType = MovementType.EAT_FOOD;
+                    }
                 }
             }
         }
