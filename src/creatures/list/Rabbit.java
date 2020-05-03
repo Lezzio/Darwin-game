@@ -27,7 +27,7 @@ public class Rabbit extends Creature {
         dna.tendencies.put(new Idle(), new BoundedDouble(1.0));
         dna.trackedEntities.put(Apple.class, new BoundedDouble(1.0));
         dna.tendencies.put(new TrackEntity(), new BoundedDouble(1.0));
-        dna.tendenciesParameters.put("idleTime", new BoundedDouble(200, 100, 300));
+        dna.tendenciesParameters.put("idleTime", new BoundedDouble(500, 100, 1000));
         dna.diet.add(Apple.class);
         dna.traits.put("speed", new BoundedDouble(300.0, 150, 1500));
     }
@@ -43,7 +43,7 @@ public class Rabbit extends Creature {
 
     @Override
     public Rabbit reproduce() {
-        DNA dna = super.mutate();
+        DNA dna = super.mutate(false);
         return new Rabbit(dna);
     }
 }

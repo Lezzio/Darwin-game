@@ -16,7 +16,7 @@ public class Wolf extends Creature {
 
     //Construct with the appropriate behaviours
     public Wolf(DNA dna) {
-        super(DrawingHandler.NONE, dna, 30.0);
+        super(DrawingHandler.NONE, dna, 40.0);
     }
     public Wolf() {
         this(new DNA());
@@ -39,7 +39,7 @@ public class Wolf extends Creature {
     }
     @Override
     public Wolf reproduce() {
-        DNA dna = super.mutate();
+        DNA dna = super.mutate(false);
         return new Wolf(dna);
     }
 }

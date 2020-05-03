@@ -17,6 +17,6 @@ public class Apple extends Food {
 
     @Override
     public int getValue() {
-        return 15;
+        return 20;
     }
 }

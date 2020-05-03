@@ -47,7 +47,7 @@ public class DrawingHandler {
                             target = next;
                         }
                     }
-                    System.out.println(target.getClass().getName() + " : ");
+                    System.out.println(target.getClass().getName() + " : CLICK ");
                     System.out.println(target.getHealth());
                     System.out.println(target.getDNA().tendencies);
                 }

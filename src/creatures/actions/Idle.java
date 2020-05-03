@@ -31,6 +31,6 @@ public class Idle implements Action {
 
     @Override
     public double getCost(DNA dna) {
-        return 0.2;
+        return dna.tendenciesParameters.get("idleTime").getValue() / 200;
     }
 }

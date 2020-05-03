@@ -99,11 +99,11 @@ public abstract class Creature implements LivingEntity, Edible, Mutable, TileHol
     }
 
     @Override
-    public DNA mutate() {
+    public DNA mutate(boolean strict) {
         DNA mutatedDNA = dna; //Initialize with default value (same as previous per default)
 
         //Mutate with probability
-        if(Math.random() > 0.66) {
+        if(Math.random() > 0.66 || strict) {
             try {
                 mutatedDNA = dna.clone();
             } catch (CloneNotSupportedException e) {
@@ -120,7 +120,11 @@ public abstract class Creature implements LivingEntity, Edible, Mutable, TileHol
 
             int randomIndex = (int) (Math.random() * boundedDoubles.size());
             BoundedDouble boundedDouble = boundedDoubles.get(randomIndex);
+            System.out.println("____________");
+            System.out.println("MUTATION : " + this.getClass().getName());
+            System.out.println("Old = " + boundedDouble.getValue());
             boundedDouble.setValue(boundedDouble.getMin() + Math.random() * boundedDouble.getMax());
+            System.out.println("New = " + boundedDouble.getValue());
         }
         return mutatedDNA;
     }

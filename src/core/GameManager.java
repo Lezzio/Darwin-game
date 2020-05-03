@@ -49,8 +49,8 @@ public class GameManager {
 
     private int delayReproduce = 0;
     private int delayReproduce_temp = 0;
-    private int REPRODUCE_COUNT = 200;
-    private int REPRODUCE_COUNT_TEMP = 300;
+    private int REPRODUCE_COUNT = 150;
+    private int REPRODUCE_COUNT_TEMP = 350;
 
     /**
      * Execute actions asynchronously
@@ -145,7 +145,7 @@ public class GameManager {
         try {
             Creature creature = creatureClass.getDeclaredConstructor().newInstance();
             map.addCreature(creature, tile);
-            creature.setDNA(creature.mutate());
+            creature.setDNA(creature.mutate(true));
             System.out.println(creature.getClass().getName() + " : ");
             System.out.println(creature.getHealth());
             System.out.println(creature.getDNA().tendencies);
