@@ -4,9 +4,9 @@ import environment.Food;
 import javafx.scene.Node;
 import rendering.DrawingHandler;
 
-public class Apple extends Food {
+public class Carrot extends Food {
 
-    public Apple(int params) {
+    public Carrot(int params) {
         super(params);
     }
 

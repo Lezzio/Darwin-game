@@ -6,11 +6,7 @@ import creatures.DNA;
 import creatures.actions.Idle;
 import creatures.actions.RandomMove;
 import creatures.actions.TrackEntity;
-import environment.TileHoldable;
-import environment.foods.Apple;
 import rendering.DrawingHandler;
-
-import java.util.HashMap;
 
 public class Wolf extends Creature {
 

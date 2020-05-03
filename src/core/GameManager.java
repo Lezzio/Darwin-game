@@ -1,23 +1,18 @@
 package core;
 
 import creatures.Creature;
-import creatures.DNA;
 import creatures.actions.Action;
 import creatures.actions.ActionManager;
 import creatures.list.Rabbit;
 import creatures.list.Wolf;
-import environment.Food;
 import environment.Location;
 import environment.Map;
 import environment.Tile;
-import environment.foods.Apple;
+import environment.foods.Carrot;
 import javafx.application.Platform;
 import rendering.DrawingHandler;
 
-import java.lang.reflect.InvocationTargetException;
 import java.util.HashMap;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 
 public class GameManager {
 
@@ -130,7 +125,7 @@ public class GameManager {
      */
     public void updateFood() {
         if (foodIncrement++ > 75) {
-            Apple apple = new Apple(DrawingHandler.NONE);
+            Carrot apple = new Carrot(DrawingHandler.NONE);
             //Random available tile
             Tile tile = map.getRandomTile(true);
             Platform.runLater(() -> map.addFood(apple, tile.getLocation()));
@@ -146,9 +141,11 @@ public class GameManager {
             Creature creature = creatureClass.getDeclaredConstructor().newInstance();
             map.addCreature(creature, tile);
             creature.setDNA(creature.mutate(true));
+            /*
             System.out.println(creature.getClass().getName() + " : ");
             System.out.println(creature.getHealth());
             System.out.println(creature.getDNA().tendencies);
+             */
         } catch (Exception e) {
             e.printStackTrace();
         }

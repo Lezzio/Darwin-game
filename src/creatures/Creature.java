@@ -55,7 +55,7 @@ public abstract class Creature implements LivingEntity, Edible, Mutable, TileHol
     @Override
     public void draw(int param) {
         drawing = DrawingHandler.draw(this, param);
-    }
+}
     @Override
     public Node getDrawing() {
         return drawing;
@@ -120,11 +120,13 @@ public abstract class Creature implements LivingEntity, Edible, Mutable, TileHol
 
             int randomIndex = (int) (Math.random() * boundedDoubles.size());
             BoundedDouble boundedDouble = boundedDoubles.get(randomIndex);
+            boundedDouble.setValue(boundedDouble.getMin() + Math.random() * boundedDouble.getMax());
+            /*
             System.out.println("____________");
             System.out.println("MUTATION : " + this.getClass().getName());
             System.out.println("Old = " + boundedDouble.getValue());
-            boundedDouble.setValue(boundedDouble.getMin() + Math.random() * boundedDouble.getMax());
             System.out.println("New = " + boundedDouble.getValue());
+            */
         }
         return mutatedDNA;
     }

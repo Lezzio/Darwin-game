@@ -11,6 +11,7 @@ import java.util.Iterator;
 
 public class MovementHandler {
 
+    //TODO Implement a simple A* algorithm to improve navigation with obstacles
     public static Location getLocationTowards(Location from, Location to) {
         if(from.getCol() != to.getCol()) {
             int diffCol = to.getCol() - from.getCol();
